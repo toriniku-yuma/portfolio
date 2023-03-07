@@ -5,11 +5,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build": "vite build && xcopy dist docs",                   
+    "rebuild": "vite build && rd docs && xcopy dist docs",
+    "git": "git add . && git commit && git push origin main"
   },
   "dependencies": {
     "react": "^18.2.0",
