@@ -5,7 +5,7 @@ export function Works(){
     <div className="flex justify-center">
         <div className="flex flex-col">
             <div className=" text-3xl self-center mb-10">Works</div>
-            <div className="grid grid-cols-2 gap-10">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
                 <WorkCompornent
                 href="https://image-bbs-for-next-js-z95c.vercel.app/"
                 image="./imageBBS.png"
