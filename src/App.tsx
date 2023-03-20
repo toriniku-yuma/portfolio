@@ -1,4 +1,5 @@
 import About from './About'
+import ThreeVRM from './ThreeVRM'
 import Works from './Works'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         </div>
       </div>
       <div className=' md:h-[120px] h-[48px]' id='About'></div>
+      <ThreeVRM/>
       <About/>
       <div className=' h-40'></div>
       <div className=' md:h-[120px] h-[48px]' id='Works'></div>
