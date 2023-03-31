@@ -6,8 +6,8 @@ function App() {
   const menulist = ["About","Works"]
   return (
     <div>
-      <div className='flex justify-between fixed bg-base-100 z-10 w-full top-0 left-0'>
-        <div className='md:text-9xl text-5xl font-bold drop-shadow'><span className='text-primary'>PORT</span><span className=' text-secondary'>FOLIO</span></div>
+      <div className='hidden flex justify-between fixed bg-base-100 z-10 w-full top-0 left-0'>
+        <div className='lg:text-9xl md:text-7xl text-5xl font-bold drop-shadow'><span className='text-primary'>PORT</span><span className=' text-secondary'>FOLIO</span></div>
         <div className='flex items-center md:pr-10'>
           {menulist.map((value,index)=>{
             return(
@@ -18,7 +18,7 @@ function App() {
           })}
         </div>
       </div>
-      <div className=' md:h-[120px] h-[48px]' id='About'></div>
+      <div className=' hidden md:h-[120px] h-[48px]' id='About'></div>
       <ThreeVRM/>
       <About/>
       <div className=' h-40'></div>
