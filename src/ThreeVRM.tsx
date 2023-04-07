@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from 'three';
-import * as TWEEN from "@tweenjs/tween.js";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { VRM, VRMLoaderPlugin } from '@pixiv/three-vrm';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
@@ -8,9 +7,11 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass"
 import { loadMixamoAnimation } from './loadMixamoAnimation';
 import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry"
-import helvetiker from "three/examples/fonts/helvetiker_bold.typeface.json"
 import {FontLoader} from "three/examples/jsm/loaders/FontLoader"
 import { MeshToonMaterial } from "three/src/Three";
+import typefaceData from "@compai/font-recursive/data/typefaces/normal-400.json"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { gsap } from "gsap";
 
 export function ThreeVRM(){
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -21,30 +22,15 @@ export function ThreeVRM(){
     init()
 
     async function init() {
-      // 始点と終点のベクトルを作成
-      let startVector = new THREE.Vector3(1.3,0,0);
-      let endVector = new THREE.Vector3(0,0,0);
-
+      THREE.DefaultLoadingManager.onProgress = function (url,loaded,total){
+        setThreeProgress(Math.round(loaded/total*100))
+      }
       THREE.DefaultLoadingManager.onLoad = function ( ) {
         console.log( 'Loading Complete!');
         setLoading("hidden");
 
-        vrm.scene.position.set(1.3,0,0);
-        // Tween.jsのアニメーションを作成
-        let tween = new TWEEN.Tween(startVector)
-          .delay(500)
-          .to(endVector, 1500) // 1秒かけて終点に移動
-          .easing(TWEEN.Easing.Cubic.Out) // イージングを設定
-          .onUpdate(function() {
-            // ベクトルを更新
-            vrm.scene.position.copy(startVector);
-          })
-          .start(); // アニメーションを開始
+        firstAnimation();
       };
-
-      THREE.DefaultLoadingManager.onProgress = function (url,loaded,total){
-        setThreeProgress(Math.round(loaded/total*100))
-      }
 
       const widthScrollBar = window.innerWidth - document.body.clientWidth;
       let width = document.body.clientWidth;
@@ -55,18 +41,20 @@ export function ThreeVRM(){
         canvas:canvasRef.current!,
         antialias: true,
       });
-      renderer.setSize(width, height,false);
       renderer.clearColor();
 
       // シーンを作成
       const scene = new THREE.Scene();
-      scene.fog = new THREE.Fog("rgb(34%, 34%, 34%)", 30, 500);
+      scene.fog = new THREE.Fog(0x000014, 30, 500);
 
-      scene.background = new THREE.Color("rgb(34%, 34%, 34%)");
+      scene.background = new THREE.Color(0x000014);
     
       // カメラを作成
       const camera = new THREE.PerspectiveCamera(30, width / height, 0.1, 10000);
-      camera.position.set(0.2, 1.8, 0.2);
+      camera.position.set(0, 0.7, 3);
+      onResize()
+
+      //const control = new OrbitControls(camera,renderer.domElement);
 
       // リサイズイベント発生時に実行
       window.addEventListener('resize', onResize);
@@ -86,26 +74,26 @@ export function ThreeVRM(){
       }
 
       async function textGeometryFunc(text:string):Promise<[TextGeometry,MeshToonMaterial]>{
-        const loader = new FontLoader();
-        const font = await loader.loadAsync('fonts/helvetiker_regular.typeface.json')
+        const font = new FontLoader().parse(typefaceData);
         const geometry = new TextGeometry(text, {
           font:font,
-          size: 80,
-          height: 5,
+          size: 0.5,
+          height: 0.05,
           curveSegments: 12,
-          bevelEnabled: true,
+          bevelEnabled: false,
           bevelThickness: 10,
           bevelSize: 8,
           bevelOffset: 0,
           bevelSegments: 5
         } );
-        const material = new THREE.MeshToonMaterial({color: 0x6699FF});
+        const material = new THREE.MeshToonMaterial({color: 0x661AE6});
         return [geometry,material];
       }
 
-      // const textW = await textGeometryFunc("W")
-      // const meshW = new THREE.Mesh(textW[0],textW[1]) 
-      // scene.add(meshW);
+       const textW = await textGeometryFunc("W")
+       const meshW = new THREE.Mesh(textW[0],textW[1]) 
+       scene.add(meshW);
+       meshW.position.set(2,0.5,0.5)
 
       const loader = new GLTFLoader();
   
@@ -130,7 +118,7 @@ export function ThreeVRM(){
         return
       }
       const headBonePosition = headBone.getWorldPosition(new THREE.Vector3())
-      camera.lookAt(new THREE.Vector3(camera.position.x,headBonePosition.y,headBonePosition.z));
+      //camera.lookAt(new THREE.Vector3(camera.position.x,headBonePosition.y,headBonePosition.z));
 
       // 環境光源を作成
       // new THREE.AmbientLight(色, 光の強さ)
@@ -141,7 +129,7 @@ export function ThreeVRM(){
       // 形状データを作成
       const SIZE = 1000;
       // 配置する個数
-      const LENGTH = 10000;
+      const LENGTH = 3000;
       // 頂点情報を格納する配列
       const vertices = [];
       for (let i = 0; i < LENGTH; i++) {
@@ -162,7 +150,7 @@ export function ThreeVRM(){
         // 一つ一つのサイズ
         size: 20,
         // 色
-        color: "rgb(0%, 0%, 0%)",
+        color: "white",
         transparent: true, // 透過処理を有効化
         alphaTest: 0.2 // 適切な透過閾値を設定（0から1の範囲）
       });
@@ -175,44 +163,44 @@ export function ThreeVRM(){
 
       const bloomPass = new UnrealBloomPass( new THREE.Vector2( width, height ), 1.5, 0.4, 0.85 );
       bloomPass.threshold = 0;
-      bloomPass.strength = 0.65;
+      bloomPass.strength = 0.8;
       bloomPass.radius = 0.3;
 
       const composer = new EffectComposer( renderer );
       composer.addPass( renderScene );
       composer.addPass( bloomPass );
 
-      let currentMixer:THREE.AnimationMixer;
-      let currentAnimationUrl;
       // mixamo animation
-      function loadFBX( animationUrl:string ) {
-
-        currentAnimationUrl = animationUrl;
-
-        // create AnimationMixer for VRM
-        currentMixer = new THREE.AnimationMixer( newVrm.scene );
-
+      async function loadFBX( animationUrl:string ){
         // Load animation
-        loadMixamoAnimation( animationUrl, newVrm ).then( ( clip ) => {
-
-          if(!clip){
-            return
-          }
-          // Apply the loaded animation to mixer and play
-          const firstMotion = currentMixer.clipAction( clip );
-          firstMotion.clampWhenFinished = true;
-          firstMotion.loop = THREE.LoopOnce;
-          firstMotion.play();
-          currentMixer.timeScale = 1.0;
-
-          currentMixer.addEventListener("finished",()=>{
-            console.log("finished");
-          });
-        } );
-
+        return await loadMixamoAnimation( animationUrl, newVrm );
       }
       const clock = new THREE.Clock();
-      loadFBX("./Yawn.fbx");
+      function textSin(){
+        return Math.sin(clock.elapsedTime*Math.PI/2)*0.001
+      }
+
+      const currentMixer = new THREE.AnimationMixer( newVrm.scene );
+      const clip = loadFBX("./Yawn.fbx").then((clip)=>{
+        if(!clip){
+          return
+        }
+        const firstMotion = currentMixer.clipAction( clip );
+        firstMotion.clampWhenFinished = true;
+        firstMotion.loop = THREE.LoopOnce;
+        firstMotion.play();
+        currentMixer.timeScale = 1.0;
+      });
+
+      function firstAnimation(){
+        vrm.scene.position.set(-2,0,0);
+        gsap.to(vrm.scene.position,{ duration: 3, x: -1 ,ease:"power4.out"}).delay(0.5);
+      }
+      currentMixer.addEventListener("finished",()=>{
+        console.log("finished");
+        // Tween.jsのアニメーションを作成
+        gsap.to(meshW.position,{ duration: 3, x: 0 ,ease:"power4.out"})
+      });
 
       tick();
     
@@ -222,11 +210,10 @@ export function ThreeVRM(){
         //vrm.scene.rotation.y += 0.01;
         mesh.rotation.y += 0.0003;
 
-        TWEEN.update();
-
         const deltaTime = clock.getDelta();
         currentMixer.update(deltaTime);
         newVrm.update(deltaTime);
+        meshW.position.y = meshW.position.y + textSin();
 
         // レンダリング
         composer.render();
