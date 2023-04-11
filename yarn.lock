@@ -217,6 +217,11 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@compai/font-anton@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@compai/font-anton/-/font-anton-0.0.3.tgz#33dd64650c8e78be01dd3e44f146317c7e47e3c4"
+  integrity sha512-o0gjqJodntQad6y/RRDAx/askVJJs5zJRbBJmxbIeGf5tRS4AoRxqoTB38n40dOosgRZlnr9HjKMazqc0yCmAw==
+
 "@compai/font-recursive@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@compai/font-recursive/-/font-recursive-0.0.4.tgz#00ae5847cf309b43c82e0b8bbaa57397de411f1e"

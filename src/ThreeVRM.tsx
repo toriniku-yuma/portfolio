@@ -9,7 +9,7 @@ import { loadMixamoAnimation } from './loadMixamoAnimation';
 import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry"
 import {FontLoader} from "three/examples/jsm/loaders/FontLoader"
 import { MeshToonMaterial } from "three/src/Three";
-import typefaceData from "@compai/font-recursive/data/typefaces/normal-400.json"
+import typefaceData from "@compai/font-anton/data/typefaces/normal-400.json"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { gsap } from "gsap";
 
@@ -75,7 +75,7 @@ export function ThreeVRM(){
         camera.updateProjectionMatrix();
       }
 
-      async function textGeometryFunc(text:string):Promise<[TextGeometry,MeshToonMaterial]>{
+      async function textGeometryFunc(text:string):Promise<TextGeometry>{
         const font = new FontLoader().parse(typefaceData);
         const geometry = new TextGeometry(text, {
           font:font,
@@ -109,14 +109,23 @@ export function ThreeVRM(){
 
         // BufferGeometryのposition属性に新しいBufferAttributeを設定する
         geometry.setAttribute('position', new THREE.BufferAttribute(newPositionArray, 3));
-        const material = new THREE.MeshToonMaterial({color: 0x661AE6});
-        return [geometry,material];
+        return geometry;
       }
 
       const meshText:{mesh:THREE.Mesh,geometry:THREE.BufferGeometry,maxX:number}[] = [];
+      const meshTextString = []
       for(const value of "WELCOME"){
-        const [text1,text2] = await textGeometryFunc(value);
-        meshText.push({mesh:new THREE.Mesh(text1,text2),geometry:text1,maxX:0});
+        meshTextString.push(value);
+      }
+      for(const [key,value] of meshTextString.entries()){
+        const textGeo = await textGeometryFunc(value);
+        let material;
+        if(key<=2){
+          material = new THREE.MeshToonMaterial({color: 0x661AE6});
+        }else{
+          material = new THREE.MeshToonMaterial({color: 0xF000B8});
+        }
+        meshText.push({mesh:new THREE.Mesh(textGeo,material),geometry:textGeo,maxX:0});
       }
       meshText.map((value,key)=>{
         const {mesh,geometry} = value
@@ -168,7 +177,8 @@ export function ThreeVRM(){
 
       // 環境光源を作成
       // new THREE.AmbientLight(色, 光の強さ)
-      const light = new THREE.AmbientLight(0xFFFFFF, 0.5);
+      const light = new THREE.DirectionalLight(0xFFFFFF, 0.5);
+      light.position.set(0,0,2);
       scene.add(light);
 
       //パーティクルを作成
@@ -209,7 +219,7 @@ export function ThreeVRM(){
 
       const bloomPass = new UnrealBloomPass( new THREE.Vector2( width, height ), 1.5, 0.4, 0.85 );
       bloomPass.threshold = 0;
-      bloomPass.strength = 0.8;
+      bloomPass.strength = 0.6;
       bloomPass.radius = 0.3;
 
       const composer = new EffectComposer( renderer );
@@ -223,7 +233,7 @@ export function ThreeVRM(){
       }
       const clock = new THREE.Clock();
       function textSin(offset:number){
-        return Math.sin(clock.elapsedTime+offset*Math.PI/2)*0.001
+        return Math.sin(clock.elapsedTime+offset*Math.PI/2)*0.0005
       }
 
       const currentMixer = new THREE.AnimationMixer( newVrm.scene );
@@ -249,11 +259,16 @@ export function ThreeVRM(){
         meshText.map((value,key)=>{
           const {mesh} = value;
           if(key === 0){
-            timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.8 ,ease:"power4.out"}))
+            timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.5 ,ease:"power4.out"}))
           }else{
-            timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.8 ,ease:"power4.out"}),"-=1.8")
+            timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.5 ,ease:"power4.out"}),"-=1.8")
           }
         })
+        const vrmHead = newVrm.humanoid.getNormalizedBoneNode("head")?.getWorldPosition(new THREE.Vector3())
+        if(vrmHead){
+          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out"}))
+        }
+        timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out"}))
       });
 
       tick();
