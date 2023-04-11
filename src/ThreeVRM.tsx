@@ -52,8 +52,10 @@ export function ThreeVRM(){
       // カメラを作成
       const camera = new THREE.PerspectiveCamera(30, width / height, 0.1, 10000);
       camera.position.set(0, 0.7, 3);
+      //camera.rotation.y = - * Math.PI / 180
       onResize()
 
+      //カメラコントロール
       //const control = new OrbitControls(camera,renderer.domElement);
 
       // リサイズイベント発生時に実行
@@ -77,23 +79,67 @@ export function ThreeVRM(){
         const font = new FontLoader().parse(typefaceData);
         const geometry = new TextGeometry(text, {
           font:font,
-          size: 0.5,
+          size: 0.3,
           height: 0.05,
           curveSegments: 12,
           bevelEnabled: false,
-          bevelThickness: 10,
-          bevelSize: 8,
-          bevelOffset: 0,
-          bevelSegments: 5
         } );
+        // BufferGeometryからposition属性を取得する
+        const positionAttribute = geometry.attributes.position;
+
+        // x座標が最小の値を取得する
+        let minX = Infinity;
+        for (let i = 0; i < positionAttribute.count; i++) {
+          const x = (positionAttribute as any).getX(i);
+          if (x < minX) {
+            minX = x;
+          }
+        }
+
+        // BufferAttributeからすべての頂点のx座標から最小値を引いた値を新しいBufferAttributeに格納する
+        const newPositionArray = new Float32Array(positionAttribute.count * 3);
+        for (let i = 0; i < positionAttribute.count; i++) {
+          const x = (positionAttribute as any).getX(i) - minX;
+          const y = (positionAttribute as any).getY(i);
+          const z = (positionAttribute as any).getZ(i);
+          newPositionArray[i * 3 + 0] = x;
+          newPositionArray[i * 3 + 1] = y;
+          newPositionArray[i * 3 + 2] = z;
+        }
+
+        // BufferGeometryのposition属性に新しいBufferAttributeを設定する
+        geometry.setAttribute('position', new THREE.BufferAttribute(newPositionArray, 3));
         const material = new THREE.MeshToonMaterial({color: 0x661AE6});
         return [geometry,material];
       }
 
-       const textW = await textGeometryFunc("W")
-       const meshW = new THREE.Mesh(textW[0],textW[1]) 
-       scene.add(meshW);
-       meshW.position.set(2,0.5,0.5)
+      const meshText:{mesh:THREE.Mesh,geometry:THREE.BufferGeometry,maxX:number}[] = [];
+      for(const value of "WELCOME"){
+        const [text1,text2] = await textGeometryFunc(value);
+        meshText.push({mesh:new THREE.Mesh(text1,text2),geometry:text1,maxX:0});
+      }
+      meshText.map((value,key)=>{
+        const {mesh,geometry} = value
+        scene.add(mesh);
+        if(key === 0){
+          mesh.position.set(2,0.5,0.5)
+        }else{
+          const {maxX} = meshText[key-1]
+          mesh.position.set(maxX+(0.05),0.5,0.5)
+        }
+        const positions = (geometry.attributes.position as any).array as number[];
+        const numVertices = positions.length / 3;
+        let maxX = Number.NEGATIVE_INFINITY
+        let maxPos: THREE.Vector3 | null = null
+        for (let i = 0; i < numVertices; i++) {
+          const x = positions[i * 3]
+          if (x > maxX) {
+            maxX = x
+            maxPos = new THREE.Vector3(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2])
+          }
+        }
+        meshText[key].maxX = mesh.position.x + maxX;
+      })
 
       const loader = new GLTFLoader();
   
@@ -176,8 +222,8 @@ export function ThreeVRM(){
         return await loadMixamoAnimation( animationUrl, newVrm );
       }
       const clock = new THREE.Clock();
-      function textSin(){
-        return Math.sin(clock.elapsedTime*Math.PI/2)*0.001
+      function textSin(offset:number){
+        return Math.sin(clock.elapsedTime+offset*Math.PI/2)*0.001
       }
 
       const currentMixer = new THREE.AnimationMixer( newVrm.scene );
@@ -199,7 +245,15 @@ export function ThreeVRM(){
       currentMixer.addEventListener("finished",()=>{
         console.log("finished");
         // Tween.jsのアニメーションを作成
-        gsap.to(meshW.position,{ duration: 3, x: 0 ,ease:"power4.out"})
+        const timeline = gsap.timeline({});
+        meshText.map((value,key)=>{
+          const {mesh} = value;
+          if(key === 0){
+            timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.8 ,ease:"power4.out"}))
+          }else{
+            timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.8 ,ease:"power4.out"}),"-=1.8")
+          }
+        })
       });
 
       tick();
@@ -213,7 +267,10 @@ export function ThreeVRM(){
         const deltaTime = clock.getDelta();
         currentMixer.update(deltaTime);
         newVrm.update(deltaTime);
-        meshW.position.y = meshW.position.y + textSin();
+        meshText.map((value,key)=>{
+          const {mesh} = value;
+          mesh.position.y = mesh.position.y + textSin(key);
+        })
 
         // レンダリング
         composer.render();
