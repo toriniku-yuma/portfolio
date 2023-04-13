@@ -75,6 +75,21 @@ export function ThreeVRM(){
         camera.updateProjectionMatrix();
       }
 
+      async function scrollTextGeometryFunc(){
+        const font = new FontLoader().parse(typefaceData);
+        const geometry = new TextGeometry("↓ Please scroll down ↓",{
+          font:font,
+          size:0.08,
+          height:0.01
+        })
+        const material = new THREE.MeshToonMaterial({color:0x1FB2A5,emissive:"white",emissiveIntensity:0.4})
+        return new THREE.Mesh(geometry,material);
+      } 
+
+      const scrollTextMesh = await scrollTextGeometryFunc();
+      scene.add(scrollTextMesh);
+      scrollTextMesh.position.set(-0.9,-2,-0.5);
+
       async function textGeometryFunc(text:string):Promise<TextGeometry>{
         const font = new FontLoader().parse(typefaceData);
         const geometry = new TextGeometry(text, {
@@ -208,7 +223,7 @@ export function ThreeVRM(){
         // 色
         color: "white",
         transparent: true, // 透過処理を有効化
-        alphaTest: 0.2 // 適切な透過閾値を設定（0から1の範囲）
+        alphaTest: 0.2, // 適切な透過閾値を設定（0から1の範囲）
       });
 
       // 物体を作成
@@ -266,9 +281,11 @@ export function ThreeVRM(){
         })
         const vrmHead = newVrm.humanoid.getNormalizedBoneNode("head")?.getWorldPosition(new THREE.Vector3())
         if(vrmHead){
-          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out"}))
+          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out"}),"+=2")
         }
         timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out"}))
+        timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,duration:0}))
+        timeline.add(gsap.to(scrollTextMesh.position,{y:1,duration:1,ease:"pawer4.out"}),"+=0.5")
       });
 
       tick();
@@ -286,6 +303,7 @@ export function ThreeVRM(){
           const {mesh} = value;
           mesh.position.y = mesh.position.y + textSin(key);
         })
+        scrollTextMesh.position.y = scrollTextMesh.position.y + textSin(0);
 
         // レンダリング
         composer.render();
