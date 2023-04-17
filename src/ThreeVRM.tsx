@@ -250,16 +250,10 @@ export function ThreeVRM(){
       }
 
       const currentMixer = new THREE.AnimationMixer( newVrm.scene );
-      const clip = loadFBX("./Yawn.fbx").then((clip)=>{
-        if(!clip){
-          return
-        }
-        const firstMotion = currentMixer.clipAction( clip );
-        firstMotion.clampWhenFinished = true;
-        firstMotion.loop = THREE.LoopOnce;
-        firstMotion.play();
-        currentMixer.timeScale = 1.0;
-      });
+      const clip = await loadFBX("./Yawn.fbx")
+      if(!clip){
+        return
+      }
 
       let rotX = 0; // 角度
       let rotY = 0
@@ -273,7 +267,17 @@ export function ThreeVRM(){
       function firstAnimation(){
         vrm.scene.position.set(-2,0,0);
         const timeline = gsap.timeline({});
-        timeline.add(gsap.to(vrm.scene.position,{ duration: 3, x: -1 ,ease:"power4.out"}).delay(0.5));
+        timeline.add(gsap.to("#loading",{duration:1,opacity:0}),"+=1"),
+        timeline.add(gsap.to(vrm.scene.position,{ duration: 3, x: -1 ,ease:"power4.out",onStart:()=>{
+          if(!clip){
+            return
+          }
+          const firstMotion = currentMixer.clipAction( clip );
+          firstMotion.clampWhenFinished = true;
+          firstMotion.loop = THREE.LoopOnce;
+          firstMotion.play();
+          currentMixer.timeScale = 1.0;
+        }}).delay(0.5));
       }
       currentMixer.addEventListener("finished",()=>{
         console.log("finished");
@@ -364,7 +368,7 @@ export function ThreeVRM(){
     },[])
     return(
       <div>
-        <div className={` fixed top-0 left-0 z-10 w-full h-full bg-neutral ${loading}`}>
+        <div id="loading" className={` fixed top-0 left-0 z-10 w-full h-full bg-neutral ${loading}`}>
           <div className="absolute left-[50%] top-[50%] text-white">Loading... {threeProgress}%</div>
         </div>
         <canvas className="" id="myCanvas" ref={canvasRef}></canvas>
