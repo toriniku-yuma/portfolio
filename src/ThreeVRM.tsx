@@ -27,8 +27,6 @@ export function ThreeVRM(){
       }
       THREE.DefaultLoadingManager.onLoad = function ( ) {
         console.log( 'Loading Complete!');
-        setLoading("hidden");
-
         firstAnimation();
       };
 
@@ -263,9 +261,19 @@ export function ThreeVRM(){
         currentMixer.timeScale = 1.0;
       });
 
+      let rotX = 0; // 角度
+      let rotY = 0
+      let mouseX = 0; // マウス座標
+      let mouseY = 0
+      let lastMouseX = 0;
+      let lastMouseY = 0;
+      let currentCameraPosition:THREE.Vector3;
+      let cameraBool = false;
+
       function firstAnimation(){
         vrm.scene.position.set(-2,0,0);
-        gsap.to(vrm.scene.position,{ duration: 3, x: -1 ,ease:"power4.out"}).delay(0.5);
+        const timeline = gsap.timeline({});
+        timeline.add(gsap.to(vrm.scene.position,{ duration: 3, x: -1 ,ease:"power4.out"}).delay(0.5));
       }
       currentMixer.addEventListener("finished",()=>{
         console.log("finished");
@@ -281,7 +289,23 @@ export function ThreeVRM(){
         })
         const vrmHead = newVrm.humanoid.getNormalizedBoneNode("head")?.getWorldPosition(new THREE.Vector3())
         if(vrmHead){
-          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out"}),"+=2")
+          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out",onComplete:()=>{
+            currentCameraPosition = camera.position
+            // マウス座標はマウスが動いた時のみ取得できる
+            document.addEventListener("mousemove", (event) => {
+              if(lastMouseX === 0){
+                lastMouseX = event.clientX;
+              }
+              if(lastMouseY === 0){
+                lastMouseY = event.clientY;
+              }
+              mouseX = event.clientX - lastMouseX;
+              mouseY = event.clientY - lastMouseY;
+              lastMouseX = event.clientX;
+              lastMouseY = event.clientY;
+              //cameraBool = true;
+            });
+          }}),"+=2")
         }
         timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out"}))
         timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,duration:0}))
@@ -305,6 +329,32 @@ export function ThreeVRM(){
         })
         scrollTextMesh.position.y = scrollTextMesh.position.y + textSin(0);
 
+        if(cameraBool){       
+          if(camera.position.x - currentCameraPosition.x >= 0.01||camera.position.x - currentCameraPosition.x <= -0.01){
+            console.log("outx")
+            mouseX = 0
+          }
+          if(camera.position.y - currentCameraPosition.y >= 0.01||camera.position.y - currentCameraPosition.y <= -0.01){
+            console.log("outy")
+            mouseY = 0
+          }
+          // イージングの公式を用いて滑らかにする
+          // 値 += (目標値 - 現在の値) * 減速値
+          rotX += (mouseX - rotX) * 0.02;
+          rotY += (mouseY - rotY) * 0.02;
+
+          // ラジアンに変換する
+          const radianX = rotX * Math.PI / 180;
+          const radianY = rotY * Math.PI / 180;
+          // 角度に応じてカメラの位置を設定
+          camera.position.x = camera.position.x + 0.001 * Math.sin(radianX);
+          camera.position.y = camera.position.y + 0.001 * Math.sin(radianY);
+          //camera.position.z = camera.position.z + 0.001 * Math.cos(radian);
+          // 原点方向を見つめる
+          
+          camera.lookAt(new THREE.Vector3(currentCameraPosition.x,currentCameraPosition.y,currentCameraPosition.z - 0.5));
+          
+        }
         // レンダリング
         composer.render();
     
