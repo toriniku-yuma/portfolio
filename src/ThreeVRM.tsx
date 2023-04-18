@@ -8,7 +8,6 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 import { loadMixamoAnimation } from './loadMixamoAnimation';
 import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry"
 import {FontLoader} from "three/examples/jsm/loaders/FontLoader"
-import { MeshToonMaterial } from "three/src/Three";
 import typefaceData from "@compai/font-anton/data/typefaces/normal-400.json"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { gsap } from "gsap";
@@ -27,6 +26,8 @@ export function ThreeVRM(){
       }
       THREE.DefaultLoadingManager.onLoad = function ( ) {
         console.log( 'Loading Complete!');
+        //setLoading("hidden");
+
         firstAnimation();
       };
 
@@ -250,24 +251,15 @@ export function ThreeVRM(){
       }
 
       const currentMixer = new THREE.AnimationMixer( newVrm.scene );
-      const clip = await loadFBX("./Yawn.fbx")
-      if(!clip){
-        return
-      }
 
-      let rotX = 0; // 角度
-      let rotY = 0
-      let mouseX = 0; // マウス座標
-      let mouseY = 0
-      let lastMouseX = 0;
-      let lastMouseY = 0;
-      let currentCameraPosition:THREE.Vector3;
-      let cameraBool = false;
+      tick();
+      
+      const clip = await loadFBX("./Yawn.fbx");
 
       function firstAnimation(){
         vrm.scene.position.set(-2,0,0);
         const timeline = gsap.timeline({});
-        timeline.add(gsap.to("#loading",{duration:2,opacity:0}),"+=1"),
+        timeline.add(gsap.to("#loading",{duration:2,opacity:0}),"+=1")
         timeline.add(gsap.to(vrm.scene.position,{ duration: 3, x: -1 ,ease:"power4.out",onStart:()=>{
           if(!clip){
             return
@@ -277,7 +269,7 @@ export function ThreeVRM(){
           firstMotion.loop = THREE.LoopOnce;
           firstMotion.play();
           currentMixer.timeScale = 1.0;
-        }}).delay(0.5));
+        }}),"-=2");
       }
       currentMixer.addEventListener("finished",()=>{
         console.log("finished");
@@ -293,30 +285,12 @@ export function ThreeVRM(){
         })
         const vrmHead = newVrm.humanoid.getNormalizedBoneNode("head")?.getWorldPosition(new THREE.Vector3())
         if(vrmHead){
-          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out",onComplete:()=>{
-            currentCameraPosition = camera.position
-            // マウス座標はマウスが動いた時のみ取得できる
-            document.addEventListener("mousemove", (event) => {
-              if(lastMouseX === 0){
-                lastMouseX = event.clientX;
-              }
-              if(lastMouseY === 0){
-                lastMouseY = event.clientY;
-              }
-              mouseX = event.clientX - lastMouseX;
-              mouseY = event.clientY - lastMouseY;
-              lastMouseX = event.clientX;
-              lastMouseY = event.clientY;
-              //cameraBool = true;
-            });
-          }}),"+=2")
+          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out"}),"+=2")
         }
         timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out"}))
         timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,duration:0}))
         timeline.add(gsap.to(scrollTextMesh.position,{y:1,duration:1,ease:"pawer4.out"}),"+=0.5")
       });
-
-      tick();
     
       // 毎フレーム時に実行されるループイベントです
       function tick() {
@@ -333,32 +307,6 @@ export function ThreeVRM(){
         })
         scrollTextMesh.position.y = scrollTextMesh.position.y + textSin(0);
 
-        if(cameraBool){       
-          if(camera.position.x - currentCameraPosition.x >= 0.01||camera.position.x - currentCameraPosition.x <= -0.01){
-            console.log("outx")
-            mouseX = 0
-          }
-          if(camera.position.y - currentCameraPosition.y >= 0.01||camera.position.y - currentCameraPosition.y <= -0.01){
-            console.log("outy")
-            mouseY = 0
-          }
-          // イージングの公式を用いて滑らかにする
-          // 値 += (目標値 - 現在の値) * 減速値
-          rotX += (mouseX - rotX) * 0.02;
-          rotY += (mouseY - rotY) * 0.02;
-
-          // ラジアンに変換する
-          const radianX = rotX * Math.PI / 180;
-          const radianY = rotY * Math.PI / 180;
-          // 角度に応じてカメラの位置を設定
-          camera.position.x = camera.position.x + 0.001 * Math.sin(radianX);
-          camera.position.y = camera.position.y + 0.001 * Math.sin(radianY);
-          //camera.position.z = camera.position.z + 0.001 * Math.cos(radian);
-          // 原点方向を見つめる
-          
-          camera.lookAt(new THREE.Vector3(currentCameraPosition.x,currentCameraPosition.y,currentCameraPosition.z - 0.5));
-          
-        }
         // レンダリング
         composer.render();
     
@@ -369,8 +317,7 @@ export function ThreeVRM(){
     return(
       <div>
         <div id="loading" className={` fixed top-0 left-0 z-10 w-full h-full bg-neutral ${loading}`}>
-          <div></div>
-          <div className="absolute left-[50%] top-[50%] text-white">Loading... {threeProgress}%</div>
+        <div className=" text-base-content radial-progress absolute left-[50%] top-[50%] " style={{"--value":threeProgress}}>{threeProgress}%</div>
         </div>
         <canvas className="" id="myCanvas" ref={canvasRef}></canvas>
       </div>
