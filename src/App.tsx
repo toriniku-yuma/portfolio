@@ -1,11 +1,13 @@
 import About from './About'
 import ThreeVRM from './ThreeVRM'
 import Works from './Works'
+import useWindowSize from './useWindowSize'
 
 function App() {
   const menulist = ["About","Works"]
+  const [width,height] = useWindowSize();
   return (
-    <div className=''>
+    <div className='hidden-scrollbar'>
       <div id='hedder' className=' flex justify-between fixed bg-base-100 z-10 w-full -top-[140px] left-0'>
         <div className='lg:text-9xl md:text-7xl text-5xl font-bold drop-shadow'><span className='text-primary'>PORT</span><span className=' text-secondary'>FOLIO</span></div>
         <div className='flex items-center md:pr-10'>
@@ -18,8 +20,8 @@ function App() {
           })}
         </div>
       </div>
-      <div className=' md:h-[120px] h-[48px]' id='About'></div>
       <ThreeVRM/>
+      <div className=' ' style={{height:height}} id='About'></div>
       <About/>
       <div className=' h-40'></div>
       <div className=' md:h-[120px] h-[48px]' id='Works'></div>

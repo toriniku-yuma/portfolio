@@ -16,12 +16,30 @@ export function ThreeVRM(){
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [loading,setLoading] = useState<string>("Loading...");
     const [complete,setComplete] = useState<string>();
-    const [threeProgress,setThreeProgress] = useState<number>();
+    const [threeProgress,setThreeProgress] = useState<number>(0);
+    const [bulr,setBulr] = useState<number>(0);
+    const radialProgress = {
+      "--value":"70"
+    } as const;
     useEffect(()=>{
         // ページの読み込みを待つ
     init()
 
     async function init() {
+      // スクロールを禁止にする関数
+      function disableScroll(event:any) {
+        event.preventDefault();
+      }
+
+      document.addEventListener('touchmove', disableScroll, { passive: false });
+      document.addEventListener('mousewheel', disableScroll, { passive: false });
+
+      function removeEvent(){
+        console.log("Event");
+        document.removeEventListener('touchmove', disableScroll);
+        document.removeEventListener('mousewheel', disableScroll);
+      }
+
       THREE.DefaultLoadingManager.onProgress = function (url,loaded,total){
         setThreeProgress(Math.round(loaded/total*100))
       }
@@ -283,6 +301,7 @@ export function ThreeVRM(){
         }}),"-=2");
       }
       currentMixer.addEventListener("finished",()=>{
+        removeEvent()
         console.log("finished");
         // Tween.jsのアニメーションを作成
         const timeline = gsap.timeline({});
@@ -316,8 +335,19 @@ export function ThreeVRM(){
         }
         timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out"}))
         timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,duration:0}))
-        timeline.add(gsap.to(scrollTextMesh.position,{y:1,duration:1,ease:"pawer4.out"}),"+=0.5")
+        timeline.add(gsap.to(scrollTextMesh.position,{y:1,duration:1,ease:"pawer4.out",onStart:removeEvent}),"+=0.5")
       });
+
+      window.addEventListener("scroll",()=>{
+        const scrollPosition = window.pageYOffset;
+        let bulrCount;
+        if(scrollPosition >= 200){
+          bulrCount = 8
+        }else{
+          bulrCount = scrollPosition / 200 * 8;
+        }
+        setBulr(bulrCount);
+      })
     
       // 毎フレーム時に実行されるループイベントです
       function tick() {
@@ -371,11 +401,11 @@ export function ThreeVRM(){
       <div>
         <div id="loading" className={` fixed top-0 left-0 z-10 w-full h-full bg-neutral`}>
           <div className={` text-primary-content absolute left-[50%] top-[50%] flex flex-col ${complete}`}>
-            <div className="radial-progress" style={{"--value":threeProgress}}>{threeProgress}%</div>
+            <div className="radial-progress" style={{"--value":threeProgress}as React.CSSProperties}>{threeProgress}%</div>
             <div className=" text-center">{loading}</div>
           </div>
         </div>
-        <canvas className=" fixed" id="myCanvas" ref={canvasRef}></canvas>
+        <canvas className=" fixed" style={{"filter":" blur("+ bulr +"px)","margin":"-"+bulr+"px"}} id="myCanvas" ref={canvasRef}></canvas>
       </div>
     )
 }
