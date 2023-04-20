@@ -2,8 +2,7 @@ export function About(){
     return(
         <div className='flex justify-center'>
         <div className=' relative'>
-            <img className=' w-[60rem] right-40 lg:relative' src='./VRChat.png'/>
-            <div className='bg-base-200 lg:absolute first-line -right-32 -bottom-10 flex flex-col items-center p-5 shadow-md'>
+            <div className='bg-base-200 first-line flex flex-col items-center p-5 shadow-md'>
                 <div><div className=" m-1 text-xl">About</div></div>
                 <div className=" flex">
                     <div className=" m-1 mx-2">

@@ -21,7 +21,8 @@ function App() {
         </div>
       </div>
       <ThreeVRM/>
-      <div className=' ' style={{height:height}} id='About'></div>
+      <div className=' ' style={{height:height}}></div>
+      <div className=' md:h-[120px] h-[48px]' id='About'></div>
       <About/>
       <div className=' h-40'></div>
       <div className=' md:h-[120px] h-[48px]' id='Works'></div>

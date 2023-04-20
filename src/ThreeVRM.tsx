@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { VRM, VRMLoaderPlugin } from '@pixiv/three-vrm';
@@ -18,18 +18,19 @@ export function ThreeVRM(){
     const [complete,setComplete] = useState<string>();
     const [threeProgress,setThreeProgress] = useState<number>(0);
     const [bulr,setBulr] = useState<number>(0);
-    const radialProgress = {
-      "--value":"70"
-    } as const;
+    const [loadingHidden,setLoadingHidden] = useState<string>();
+
+    // スクロールを禁止にする関数
+    const disableScroll = useCallback((event:any) =>{
+      event.preventDefault();
+    },[])
+
     useEffect(()=>{
         // ページの読み込みを待つ
     init()
 
     async function init() {
-      // スクロールを禁止にする関数
-      function disableScroll(event:any) {
-        event.preventDefault();
-      }
+      window.scroll({top: 0});
 
       document.addEventListener('touchmove', disableScroll, { passive: false });
       document.addEventListener('mousewheel', disableScroll, { passive: false });
@@ -333,7 +334,9 @@ export function ThreeVRM(){
             });
           }}),"+=2")
         }
-        timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out"}))
+        timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out",onComplete:()=>{
+          setLoadingHidden("hidden");
+        }}))
         timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,duration:0}))
         timeline.add(gsap.to(scrollTextMesh.position,{y:1,duration:1,ease:"pawer4.out",onStart:removeEvent}),"+=0.5")
       });
@@ -341,10 +344,10 @@ export function ThreeVRM(){
       window.addEventListener("scroll",()=>{
         const scrollPosition = window.pageYOffset;
         let bulrCount;
-        if(scrollPosition >= 200){
+        if(scrollPosition >= 500){
           bulrCount = 8
         }else{
-          bulrCount = scrollPosition / 200 * 8;
+          bulrCount = scrollPosition / 500 * 8;
         }
         setBulr(bulrCount);
       })
@@ -399,13 +402,13 @@ export function ThreeVRM(){
     },[])
     return(
       <div>
-        <div id="loading" className={` fixed top-0 left-0 z-10 w-full h-full bg-neutral`}>
+        <div id="loading" className={` fixed top-0 left-0 z-10 w-full h-full bg-neutral ${loadingHidden}`}>
           <div className={` text-primary-content absolute left-[50%] top-[50%] flex flex-col ${complete}`}>
             <div className="radial-progress" style={{"--value":threeProgress}as React.CSSProperties}>{threeProgress}%</div>
             <div className=" text-center">{loading}</div>
           </div>
         </div>
-        <canvas className=" fixed" style={{"filter":" blur("+ bulr +"px)","margin":"-"+bulr+"px"}} id="myCanvas" ref={canvasRef}></canvas>
+        <canvas className=" fixed scale-[1.015]" style={{"filter":" blur("+ bulr +"px)"}} id="myCanvas" ref={canvasRef}></canvas>
       </div>
     )
 }
