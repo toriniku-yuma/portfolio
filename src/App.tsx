@@ -1,11 +1,37 @@
+import { useEffect, useRef, useState } from 'react'
 import About from './About'
 import ThreeVRM from './ThreeVRM'
 import Works from './Works'
 import useWindowSize from './useWindowSize'
+import { gsap } from 'gsap'
 
 function App() {
   const menulist = ["About","Works"]
   const [width,height] = useWindowSize();
+  const [scrollPositionCount,setScrollPositionCount] = useState<number>(0)
+  const aboutAnimBool = useRef(true);
+  const worksAnimBool = useRef(true);
+  const scrollToSection = (id:string) => {
+    const element = document.getElementById(id);
+    if(element){
+      element.scrollIntoView({behavior: "smooth"});
+    }
+  }
+  useEffect(()=>{
+    window.addEventListener("scroll",()=>{
+      const scrollPosition = window.pageYOffset;
+      setScrollPositionCount(scrollPosition);
+      if(scrollPosition>=450&&aboutAnimBool.current){
+        gsap.to("#aboutAnimation",{duration:5,opacity:1,ease:"power4.out"});
+        aboutAnimBool.current = false;
+      }
+      if(scrollPosition>=1000&&worksAnimBool.current){
+        gsap.to("#worksAnimation",{duration:5,opacity:1,ease:"power4.out"});
+        worksAnimBool.current = false;
+      }
+  },{passive:true})
+  },[])
+
   return (
     <div className='hidden-scrollbar'>
       <div id='hedder' className=' flex justify-between fixed bg-base-100 z-10 w-full -top-[140px] left-0'>
@@ -13,20 +39,24 @@ function App() {
         <div className='flex items-center md:pr-10'>
           {menulist.map((value,index)=>{
             return(
-              <a key={index} href={`#${value}`}>
-              <div className="md:mx-5 mx-2 btn btn-lg">{value}</div>
-              </a>
+              <button key={index} onClick={() => scrollToSection(value)} className="md:mx-5 mx-2 btn btn-lg">{value}</button>
             )
           })}
         </div>
       </div>
+      <div className=' fixed z-10 font-bold text-3xl'>{scrollPositionCount}</div>
       <ThreeVRM/>
       <div className=' ' style={{height:height}}></div>
       <div className=' md:h-[120px] h-[48px]' id='About'></div>
-      <About/>
+      <div id='aboutAnimation' className=' relative opacity-0'>
+        <About/>
+      </div>
       <div className=' h-40'></div>
       <div className=' md:h-[120px] h-[48px]' id='Works'></div>
-      <Works/>
+      <div id='worksAnimation' className=' opacity-0'>
+        <Works/>
+      </div>
+      
       <div className=' h-20'></div>
       <div className=' flex flex-col justify-center items-center bg-base-200'>
         <div className=' h-10'></div>

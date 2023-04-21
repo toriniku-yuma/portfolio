@@ -30,7 +30,10 @@ export function ThreeVRM(){
     init()
 
     async function init() {
-      window.scroll({top: 0});
+      //リロード(更新)時にwindowのスクロール位置を強制的に0,0にする
+      window.addEventListener("beforeunload",function(){
+        window.scrollTo(0, 0);
+      });
 
       document.addEventListener('touchmove', disableScroll, { passive: false });
       document.addEventListener('mousewheel', disableScroll, { passive: false });
@@ -344,13 +347,13 @@ export function ThreeVRM(){
       window.addEventListener("scroll",()=>{
         const scrollPosition = window.pageYOffset;
         let bulrCount;
-        if(scrollPosition >= 500){
+        if(scrollPosition >= 400){
           bulrCount = 8
         }else{
-          bulrCount = scrollPosition / 500 * 8;
+          bulrCount = scrollPosition / 400 * 8;
         }
         setBulr(bulrCount);
-      })
+      },{passive:true})
     
       // 毎フレーム時に実行されるループイベントです
       function tick() {
