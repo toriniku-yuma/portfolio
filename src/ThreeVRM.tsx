@@ -305,7 +305,6 @@ export function ThreeVRM(){
         }}),"-=2");
       }
       currentMixer.addEventListener("finished",()=>{
-        removeEvent()
         console.log("finished");
         // Tween.jsのアニメーションを作成
         const timeline = gsap.timeline({});
@@ -337,7 +336,7 @@ export function ThreeVRM(){
             });
           }}),"+=2")
         }
-        timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out",onComplete:()=>{
+        timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out",onStart:()=>{
           setLoadingHidden("hidden");
         }}))
         timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,duration:0}))

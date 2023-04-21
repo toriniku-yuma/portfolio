@@ -22,11 +22,11 @@ function App() {
       const scrollPosition = window.pageYOffset;
       setScrollPositionCount(scrollPosition);
       if(scrollPosition>=450&&aboutAnimBool.current){
-        gsap.to("#aboutAnimation",{duration:5,opacity:1,ease:"power4.out"});
+        gsap.to("#aboutAnimation",{duration:2,opacity:1,ease:"power4.in"});
         aboutAnimBool.current = false;
       }
       if(scrollPosition>=1000&&worksAnimBool.current){
-        gsap.to("#worksAnimation",{duration:5,opacity:1,ease:"power4.out"});
+        gsap.to("#worksAnimation",{duration:2,opacity:1,ease:"power4.in"});
         worksAnimBool.current = false;
       }
   },{passive:true})
@@ -44,7 +44,7 @@ function App() {
           })}
         </div>
       </div>
-      <div className=' fixed z-10 font-bold text-3xl'>{scrollPositionCount}</div>
+      <div className=' hidden fixed z-10 font-bold text-3xl'>{scrollPositionCount}</div>
       <ThreeVRM/>
       <div className=' ' style={{height:height}}></div>
       <div className=' md:h-[120px] h-[48px]' id='About'></div>
