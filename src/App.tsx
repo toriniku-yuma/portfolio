@@ -22,11 +22,11 @@ function App() {
       const scrollPosition = window.pageYOffset;
       setScrollPositionCount(scrollPosition);
       if(scrollPosition>=450&&aboutAnimBool.current){
-        gsap.to("#aboutAnimation",{duration:2,opacity:1,ease:"power4.in"});
+        gsap.to("#aboutAnimation",{duration:2,opacity:1,ease:"power4.out"});
         aboutAnimBool.current = false;
       }
       if(scrollPosition>=1000&&worksAnimBool.current){
-        gsap.to("#worksAnimation",{duration:2,opacity:1,ease:"power4.in"});
+        gsap.to("#worksAnimation",{duration:2,opacity:1,ease:"power4.out"});
         worksAnimBool.current = false;
       }
   },{passive:true})
