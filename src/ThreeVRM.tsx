@@ -21,7 +21,7 @@ export function ThreeVRM(){
     const [loadingHidden,setLoadingHidden] = useState<string>();
 
     // スクロールを禁止にする関数
-    const disableScroll = useCallback((event:any) =>{
+    const disableScroll = useCallback((event:TouchEvent|WheelEvent) =>{
       event.preventDefault();
     },[])
 
@@ -36,12 +36,12 @@ export function ThreeVRM(){
       });
 
       document.addEventListener('touchmove', disableScroll, { passive: false });
-      document.addEventListener('mousewheel', disableScroll, { passive: false });
+      document.addEventListener('wheel', disableScroll, { passive: false });
 
       function removeEvent(){
         console.log("Event");
         document.removeEventListener('touchmove', disableScroll);
-        document.removeEventListener('mousewheel', disableScroll);
+        document.removeEventListener('wheel', disableScroll);
       }
 
       THREE.DefaultLoadingManager.onProgress = function (url,loaded,total){
@@ -319,7 +319,7 @@ export function ThreeVRM(){
         const vrmHead = newVrm.humanoid.getNormalizedBoneNode("head")?.getWorldPosition(new THREE.Vector3())
         if(vrmHead){
           timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out",onComplete:()=>{
-            currentCameraPosition = camera.position
+            currentCameraPosition = (new THREE.Vector3).copy(camera.position)
             // マウス座標はマウスが動いた時のみ取得できる
             document.addEventListener("mousemove", (event) => {
               if(lastMouseX === 0){
@@ -328,11 +328,11 @@ export function ThreeVRM(){
               if(lastMouseY === 0){
                 lastMouseY = event.clientY;
               }
-              mouseX = event.clientX - lastMouseX;
-              mouseY = event.clientY - lastMouseY;
+              //mouseX = event.clientX - lastMouseX;
+              //mouseY = event.clientY - lastMouseY;
               lastMouseX = event.clientX;
               lastMouseY = event.clientY;
-              //cameraBool = true;
+              cameraBool = true;
             });
           }}),"+=2")
         }
@@ -347,11 +347,10 @@ export function ThreeVRM(){
         const scrollPosition = window.pageYOffset;
         let bulrCount;
         if(scrollPosition >= 400){
-          bulrCount = 8
         }else{
           bulrCount = scrollPosition / 400 * 8;
+          setBulr(bulrCount);
         }
-        setBulr(bulrCount);
       },{passive:true})
     
       // 毎フレーム時に実行されるループイベントです
@@ -380,19 +379,27 @@ export function ThreeVRM(){
           }
           // イージングの公式を用いて滑らかにする
           // 値 += (目標値 - 現在の値) * 減速値
-          rotX += (mouseX - rotX) * 0.02;
-          rotY += (mouseY - rotY) * 0.02;
+          const targetX = currentCameraPosition.x + -0.02 * ((lastMouseX / width) - 0.5) * 2;
+          const targetY = currentCameraPosition.y + 0.02 * ((lastMouseY / height) - 0.5) * 2;
+          console.log(currentCameraPosition)
+
+          const speed = 0.05;
+
+          camera.position.x = camera.position.x * (1 - speed) + targetX * speed;
+          camera.position.y = camera.position.y * (1 - speed) + targetY * speed;
+          //rotX += (mouseX - rotX) * 0.02;
+          //rotY += (mouseY - rotY) * 0.02;
           // ラジアンに変換する
-          const radianX = rotX * Math.PI / 180;
-          const radianY = rotY * Math.PI / 180;
+          //const radianX = rotX * Math.PI / 180;
+          //const radianY = rotY * Math.PI / 180;
           // 角度に応じてカメラの位置を設定
-          camera.position.x = camera.position.x + 0.001 * Math.sin(radianX);
-          camera.position.y = camera.position.y + 0.001 * Math.sin(radianY);
+          //camera.position.x = camera.position.x + 0.001 * Math.sin(radianX);
+          //camera.position.y = camera.position.y + 0.001 * Math.sin(radianY);
           //camera.position.z = camera.position.z + 0.001 * Math.cos(radian);
           // 原点方向を見つめる
           
           camera.lookAt(new THREE.Vector3(currentCameraPosition.x,currentCameraPosition.y,currentCameraPosition.z - 0.5));
-          
+
         }
 
         // レンダリング

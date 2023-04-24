@@ -20,7 +20,7 @@ function App() {
   useEffect(()=>{
     window.addEventListener("scroll",()=>{
       const scrollPosition = window.pageYOffset;
-      setScrollPositionCount(scrollPosition);
+      //setScrollPositionCount(scrollPosition);
       if(scrollPosition>=450&&aboutAnimBool.current){
         gsap.to("#aboutAnimation",{duration:2,opacity:1,ease:"power4.out"});
         aboutAnimBool.current = false;
