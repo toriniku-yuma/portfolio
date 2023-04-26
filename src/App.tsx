@@ -10,6 +10,7 @@ function App() {
   const [width,height] = useWindowSize();
   const [scrollPositionCount,setScrollPositionCount] = useState<number>(0)
   const aboutAnimBool = useRef(true);
+  const progressAnimBool = useRef(true)
   const worksAnimBool = useRef(true);
   const scrollToSection = (id:string) => {
     const element = document.getElementById(id);
@@ -25,6 +26,10 @@ function App() {
         gsap.to("#aboutAnimation",{duration:2,opacity:1,ease:"power4.out"});
         aboutAnimBool.current = false;
       }
+      if(scrollPosition>=550&&progressAnimBool.current){
+        gsap.from(".progress",{duration:2,value:0,ease:"power4.out"});
+        progressAnimBool.current = false;
+      }
       if(scrollPosition>=1000&&worksAnimBool.current){
         gsap.to("#worksAnimation",{duration:2,opacity:1,ease:"power4.out"});
         worksAnimBool.current = false;
@@ -39,7 +44,7 @@ function App() {
         <div className='flex items-center md:pr-10'>
           {menulist.map((value,index)=>{
             return(
-              <button key={index} onClick={() => scrollToSection(value)} className="md:mx-5 mx-2 btn btn-lg">{value}</button>
+              <button key={index} onClick={() => scrollToSection(value)} className="md:mx-5 mx-2 btn btn-lg w-28 h-[69px]">{value}</button>
             )
           })}
         </div>

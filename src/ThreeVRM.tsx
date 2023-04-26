@@ -284,6 +284,8 @@ export function ThreeVRM(){
       let lastMouseY = 0;
       let currentCameraPosition:THREE.Vector3;
       let cameraBool = false;
+      let plZ = 0.4;
+      let aspRatio = width/height;
 
       tick();
       
@@ -370,18 +372,15 @@ export function ThreeVRM(){
 
         if(cameraBool){       
           if(camera.position.x - currentCameraPosition.x >= 0.01||camera.position.x - currentCameraPosition.x <= -0.01){
-            console.log("outx")
             mouseX = 0
           }
           if(camera.position.y - currentCameraPosition.y >= 0.01||camera.position.y - currentCameraPosition.y <= -0.01){
-            console.log("outy")
             mouseY = 0
           }
           // イージングの公式を用いて滑らかにする
           // 値 += (目標値 - 現在の値) * 減速値
           const targetX = currentCameraPosition.x + -0.02 * ((lastMouseX / width) - 0.5) * 2;
           const targetY = currentCameraPosition.y + 0.02 * ((lastMouseY / height) - 0.5) * 2;
-          console.log(currentCameraPosition)
 
           const speed = 0.05;
 
@@ -400,6 +399,13 @@ export function ThreeVRM(){
           
           camera.lookAt(new THREE.Vector3(currentCameraPosition.x,currentCameraPosition.y,currentCameraPosition.z - 0.5));
 
+          let dispX = (lastMouseX / window.innerWidth) * 2 - 1;
+          let dispY = -(lastMouseY / window.innerHeight) * 2 + 1;
+
+          let heightOnOrigin = (Math.tan(((30 * Math.PI / 180) / 2)) * (camera.position.z - plZ) * 2)
+          let widthOnOrigin = heightOnOrigin * aspRatio
+
+          newVrm.lookAt?.lookAt(new THREE.Vector3(dispX * widthOnOrigin*2, dispY * heightOnOrigin*4, plZ));
         }
 
         // レンダリング
