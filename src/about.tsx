@@ -137,13 +137,29 @@ export function About(){
                         </div>
                     </div>
                 </div>
-                <div className=" mt-2">
-                    <div><span className=" font-bold">将来の夢</span>:</div>
-                    <div>VRで見ることの出来るモーション共有プラットフォームの</div>
-                    <div>開発、運営を行うこと</div>
-                    <div>VRを活用した低遅延ライブ配信プラットフォームの</div>
-                    <div>開発、運営を行うこと</div>
-                    <div>それらの事業を扱う会社を設立すること</div>
+                <div className=" mt-6">
+                    <div className=" mb-4"><span className=" font-bold">将来の夢</span>:</div>
+                    <div>私は、2018年の春にバーチャルキャストの体験会を通してVRやメタバース空間の楽しさを知り、</div>
+                    <div>そこからVRに没頭するようになりました。</div>
+                    <div>当時、お金に余裕のなかった中で、それでもあの魅力に取り憑かれた私は</div>
+                    <div className=" mb-4">貯蓄を切り崩してOculus Rift CV1を購入し、VRの世界へと入っていきました。</div>
+                    <div>それからの生活は劇的なものでした。</div>
+                    <div>毎日仮想空間に入っては、そこで様々な人達と出会い、体験をしていく。</div>
+                    <div>その傍ら、VRに対しもっと知りたい！知見を深めたい！という思いが強くなっていき、</div>
+                    <div>VRメディアを毎日眺めたり、Meta社の年次カンファレンスである「Meta Connect」には、</div>
+                    <div>時差の関係で真夜中にやっているにも関わらず、毎回リアルタイムで視聴し、</div>
+                    <div>VRの歴史の変わっていく瞬間を目の当たりにしていきました。</div>
+                    <div>また、Oculus Questの登場でスタンドアロンVRが注目された際には、</div>
+                    <div>非エンジニアながらスタンドアロンVRの勉強会に参加させて頂き、より知見を深めるきっかけを</div>
+                    <div>頂くことが出来ました。</div>
+                    <div className=" mt-4">そうした興味や関心は、いずれ実際にVRで活躍するエンジニアという方向へ変わっていき、</div>
+                    <div>ITエンジニアを志し、そのための学びを深めるきっかけへとなりました。</div>
+                    <div>特にWebGPUが注目される中、WebXR分野がこれから成長していくと考え、</div>
+                    <div>Webフロントエンドの学習を始めました。</div>
+                    <div className=" mt-4">そんな私の今の将来の夢は、</div>
+                    <div className=" font-bold">・WebXRを活用した、アニメーションビューワサービスを開発すること</div>
+                    <div className=" font-bold">・VRを活用した、低遅延な配信プラットフォームを開発すること</div>
+                    <div className=" font-bold">・</div>
                 </div>
             </div>
             </div>
