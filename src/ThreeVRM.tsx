@@ -76,6 +76,18 @@ export function ThreeVRM(){
       const camera = new THREE.PerspectiveCamera(30, width / height, 0.1, 10000);
       camera.position.set(0, 0.7, 3);
       //camera.rotation.y = - * Math.PI / 180
+
+      const renderScene = new RenderPass( scene, camera );
+
+      const bloomPass = new UnrealBloomPass( new THREE.Vector2( width, height ), 1.5, 0.4, 0.85 );
+      bloomPass.threshold = 0;
+      bloomPass.strength = 0.6;
+      bloomPass.radius = 0.3;
+
+      const composer = new EffectComposer( renderer );
+      composer.addPass( renderScene );
+      composer.addPass( bloomPass );
+
       onResize()
 
       //カメラコントロール
@@ -92,6 +104,9 @@ export function ThreeVRM(){
         // レンダラーのサイズを調整する
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(width, height);
+
+        composer.setPixelRatio(window.devicePixelRatio);
+        composer.setSize(width,height)
 
         // カメラのアスペクト比を正す
         camera.aspect = width / height;
@@ -252,17 +267,6 @@ export function ThreeVRM(){
       // 物体を作成
       const mesh = new THREE.Points(geometry, material);
       scene.add(mesh); // シーンは任意の THREE.Scene インスタンス
-
-      const renderScene = new RenderPass( scene, camera );
-
-      const bloomPass = new UnrealBloomPass( new THREE.Vector2( width, height ), 1.5, 0.4, 0.85 );
-      bloomPass.threshold = 0;
-      bloomPass.strength = 0.6;
-      bloomPass.radius = 0.3;
-
-      const composer = new EffectComposer( renderer );
-      composer.addPass( renderScene );
-      composer.addPass( bloomPass );
 
       // mixamo animation
       async function loadFBX( animationUrl:string ){

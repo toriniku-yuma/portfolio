@@ -39,12 +39,12 @@ function App() {
 
   return (
     <div className='hidden-scrollbar'>
-      <div id='hedder' className=' flex justify-between fixed bg-base-100 z-10 w-full -top-[140px] left-0'>
+      <div id='hedder' className=' flex md:justify-between fixed bg-base-100 z-10 w-full -top-[140px] left-0'>
         <div className='lg:text-9xl md:text-7xl text-5xl font-bold drop-shadow'><span className='text-primary'>PORT</span><span className=' text-secondary'>FOLIO</span></div>
         <div className='flex items-center md:pr-10'>
           {menulist.map((value,index)=>{
             return(
-              <button key={index} onClick={() => scrollToSection(value)} className="md:mx-5 mx-2 btn btn-lg w-28 h-[69px]">{value}</button>
+              <button key={index} onClick={() => scrollToSection(value)} className="md:mx-5 mx-2 btn btn-xs md:btn-lg md:w-28 md:h-[69px]">{value}</button>
             )
           })}
         </div>

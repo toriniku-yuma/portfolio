@@ -32,106 +32,106 @@ export function About(){
                     <div className=" flex flex-col">
                         <div className=" font-bold text-primary text-lg flex items-center mb-2 mt-4">
                             <span className=" mr-4">Javascript</span>
-                            <progress className="progress progress-primary w-[60%] h-4 absolute left-[190px]" value="70" max="100"></progress>
+                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="70" max="100"></progress>
                             <span className=" ml-4 absolute right-5">70%</span>
                         </div>
                         <div className=" font-bold text-primary text-lg flex items-center mb-2">
-                            <progress className="progress progress-primary w-[60%] h-4 absolute left-[190px]" value="50" max="100"></progress>
+                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
                             <span className=" mr-4">Typescript</span>
                             <span className=" ml-4 absolute right-5">50%</span>
                         </div>
                         <div className=" font-bold text-primary text-lg flex items-center mb-2">
-                            <progress className="progress progress-primary w-[60%] h-4 absolute left-[190px]" value="50" max="100"></progress>
+                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
                             <span className=" mr-4">Python</span>
                             <span className=" ml-4 absolute right-5">50%</span>
                         </div>
                         <div className=" font-bold text-primary text-lg flex items-center mb-2">
-                            <progress className="progress progress-primary w-[60%] h-4 absolute left-[190px]" value="50" max="100"></progress>
+                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
                             <span className=" mr-4">Lua</span>
                             <span className=" ml-4 absolute right-5">50%</span>
                         </div>
                         <div className=" font-bold text-primary text-lg flex items-center mb-2">
-                            <progress className="progress progress-primary w-[60%] h-4 absolute left-[190px]" value="30" max="100"></progress>
+                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
                             <span className=" mr-4">C#</span>
                             <span className=" ml-4 absolute right-5">30%</span>
                         </div>
                         <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary w-[60%] h-4 absolute left-[190px]" value="40" max="100"></progress>
+                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="40" max="100"></progress>
                             <span className=" mr-4">React</span>
                             <span className=" ml-4 absolute right-5">40%</span>
                         </div>
                         <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary w-[60%] h-4 absolute left-[190px]" value="30" max="100"></progress>
+                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
                             <span className=" mr-4">Next.js</span>
                             <span className=" ml-4 absolute right-5">30%</span>
                         </div>
                         <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary w-[60%] h-4 absolute left-[190px]" value="50" max="100"></progress>
+                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
                             <span className=" mr-4">Three.js</span>
                             <span className=" ml-4 absolute right-5">50%</span>
                         </div>
                         <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary w-[60%] h-4 absolute left-[190px]" value="30" max="100"></progress>
+                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
                             <span className=" mr-4">.NET Framework</span>
                             <span className=" ml-4 absolute right-5">30%</span>
                         </div>
                         <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary w-[60%] h-4 absolute left-[190px]" value="50" max="100"></progress>
+                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
                             <span className=" mr-4">VCI (VR)</span>
                             <span className=" ml-4 absolute right-5">50%</span>
                         </div>
                         <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent w-[60%] h-4 absolute left-[190px]" value="60" max="100"></progress>
+                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="60" max="100"></progress>
                             <span className=" mr-4">TailwindCSS</span>
                             <span className=" ml-4 absolute right-5">60%</span>
                         </div>
                         <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent w-[60%] h-4 absolute left-[190px]" value="50" max="100"></progress>
+                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
                             <span className=" mr-4">GSAP 3</span>
                             <span className=" ml-4 absolute right-5">50%</span>
                         </div>
                         <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent w-[60%] h-4 absolute left-[190px]" value="20" max="100"></progress>
+                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="20" max="100"></progress>
                             <span className=" mr-4">Framer-Motion</span>
                             <span className=" ml-4 absolute right-5">20%</span>
                         </div>
                         <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent w-[60%] h-4 absolute left-[190px]" value="60" max="100"></progress>
+                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="60" max="100"></progress>
                             <span className=" mr-4">WebSocket</span>
                             <span className=" ml-4 absolute right-5">60%</span>
                         </div>
                         <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent w-[60%] h-4 absolute left-[190px]" value="30" max="100"></progress>
+                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
                             <span className=" mr-4">Prisma</span>
                             <span className=" ml-4 absolute right-5">30%</span>
                         </div>
                         <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent w-[60%] h-4 absolute left-[190px]" value="20" max="100"></progress>
+                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="20" max="100"></progress>
                             <span className=" mr-4">supabase</span>
                             <span className=" ml-4 absolute right-5">20%</span>
                         </div>
                         <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent w-[60%] h-4 absolute left-[190px]" value="40" max="100"></progress>
+                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="40" max="100"></progress>
                             <span className=" mr-4">Vercel</span>
                             <span className=" ml-4 absolute right-5">40%</span>
                         </div>
                         <div className=" font-bold text-info text-lg flex items-center mb-2">
-                            <progress className="progress progress-info w-[60%] h-4 absolute left-[190px]" value="70" max="100"></progress>
+                            <progress className="progress progress-info md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="70" max="100"></progress>
                             <span className=" mr-4">VSCode</span>
                             <span className=" ml-4 absolute right-5">70%</span>
                         </div>
                         <div className=" font-bold text-info text-lg flex items-center mb-2">
-                            <progress className="progress progress-info w-[60%] h-4 absolute left-[190px]" value="30" max="100"></progress>
+                            <progress className="progress progress-info md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
                             <span className=" mr-4">Visual Studio</span>
                             <span className=" ml-4 absolute right-5">30%</span>
                         </div>
                         <div className=" font-bold text-info text-lg flex items-center mb-2">
-                            <progress className="progress progress-info w-[60%] h-4 absolute left-[190px]" value="50" max="100"></progress>
+                            <progress className="progress progress-info md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
                             <span className=" mr-4">GitHub</span>
                             <span className=" ml-4 absolute right-5">50%</span>
                         </div>
                         <div className=" font-extrabold text-error text-lg flex items-center my-8">
-                            <progress className="progress progress-error w-[100%] h-4 absolute left-[190px]" value="100" max="100"></progress>
+                            <progress className="progress progress-error lg:w-[100%] md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="100" max="100"></progress>
                             <span className=" mr-4">！VRへの情熱！</span>
                             <span className=" ml-4 absolute right-5"></span>
                         </div>
@@ -159,7 +159,19 @@ export function About(){
                     <div className=" mt-4">そんな私の今の将来の夢は、</div>
                     <div className=" font-bold">・WebXRを活用した、アニメーションビューワサービスを開発すること</div>
                     <div className=" font-bold">・VRを活用した、低遅延な配信プラットフォームを開発すること</div>
-                    <div className=" font-bold">・</div>
+                    <div className=" font-bold">・それらを事業として展開する会社を設立すること</div>
+                    <div>です。</div>
+                    <div className=" mt-4">現在、3DのアニメーションをVRで閲覧する方法として、360°動画がよく見受けられますが、</div>
+                    <div>せっかくその世界に入り込んで色んな視点からコンテンツを視聴することが出来るという</div>
+                    <div>VRならではの特徴があるにも関わらず、360°動画では頭の角度を変えることしか出来ない、</div>
+                    <div>という部分に勿体なさを感じ、その勿体なさをどうにかするためには、</div>
+                    <div>リアルタイムレンダリングで自由度の高いコンテンツを作ることが出来るサービスを</div>
+                    <div>自分で作るしか無い！と考えています。</div>
+                    <div>また、それを活用することで、VTuber的な3Dキャラクターを使ったライブ配信に</div>
+                    <div>低遅延かつ、自由な視点から見ることが出来たり、インタラクティブな要素を持たせられる</div>
+                    <div>配信プラットフォームを実現することも可能なのではないか？と考えています。</div>
+                    <div className=" mt-4">そんな私の夢を実現すべく、日々勉強に励む毎日です。</div>
+                    <div>どうかこの私の夢を是非とも応援してください！</div>
                 </div>
             </div>
             </div>
