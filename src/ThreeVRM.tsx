@@ -56,7 +56,7 @@ export function ThreeVRM(){
       };
 
       const widthScrollBar = window.innerWidth - document.body.clientWidth;
-      let width = document.body.clientWidth;
+      let width = window.innerWidth;
       let height = window.innerHeight;
 
       // レンダラーを作成
@@ -98,7 +98,7 @@ export function ThreeVRM(){
 
       function onResize() {
         // サイズを取得
-        width = window.innerWidth - widthScrollBar;
+        width = window.innerWidth;
         height = window.innerHeight;
 
         // レンダラーのサイズを調整する
@@ -130,13 +130,24 @@ export function ThreeVRM(){
 
       async function textGeometryFunc(text:string):Promise<TextGeometry>{
         const font = new FontLoader().parse(typefaceData);
-        const geometry = new TextGeometry(text, {
-          font:font,
-          size: 0.3,
-          height: 0.05,
-          curveSegments: 12,
-          bevelEnabled: false,
-        } );
+        let geometry;
+        if(width<=1024){
+          geometry = new TextGeometry(text, {
+            font:font,
+            size: 0.1,
+            height: 0.05,
+            curveSegments: 12,
+            bevelEnabled: false,
+          } );
+        }else{
+          geometry = new TextGeometry(text, {
+            font:font,
+            size: 0.3,
+            height: 0.05,
+            curveSegments: 12,
+            bevelEnabled: false,
+          } );
+        }
         // BufferGeometryからposition属性を取得する
         const positionAttribute = geometry.attributes.position;
 
@@ -299,7 +310,11 @@ export function ThreeVRM(){
         vrm.scene.position.set(-2,0,0);
         const timeline = gsap.timeline({});
         timeline.add(gsap.to("#loading",{duration:2,opacity:0}),"+=1")
-        timeline.add(gsap.to(vrm.scene.position,{ duration: 3, x: -1 ,ease:"power4.out",onStart:()=>{
+        let positionX = -1
+        if(width<=1024){
+          positionX = -0.3
+        }
+        timeline.add(gsap.to(vrm.scene.position,{ duration: 3, x: positionX ,ease:"power4.out",onStart:()=>{
           if(!clip){
             return
           }
