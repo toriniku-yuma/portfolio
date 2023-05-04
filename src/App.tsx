@@ -19,20 +19,31 @@ function App() {
     }
   }
   useEffect(()=>{
+    const element = {
+      about:document.getElementById("aboutAnimation")?.getBoundingClientRect().top,
+      progress:document.getElementsByClassName("progress")[0]?.getBoundingClientRect().top,
+      works:document.getElementById("worksElement")?.getBoundingClientRect().top
+    }
     window.addEventListener("scroll",()=>{
       const scrollPosition = window.pageYOffset;
       //setScrollPositionCount(scrollPosition);
-      if(scrollPosition>=450&&aboutAnimBool.current){
-        gsap.to("#aboutAnimation",{duration:2,opacity:1,ease:"power4.out"});
-        aboutAnimBool.current = false;
+      if(element.about){
+        if(scrollPosition>=element.about&&aboutAnimBool.current){
+          gsap.to("#aboutAnimation",{duration:2,opacity:1,ease:"power4.out"});
+          aboutAnimBool.current = false;
+        }
       }
-      if(scrollPosition>=550&&progressAnimBool.current){
-        gsap.from(".progress",{duration:2,value:0,ease:"power4.out"});
-        progressAnimBool.current = false;
+      if(element.progress){
+        if(scrollPosition>=element.progress&&progressAnimBool.current){
+          gsap.from(".progress",{duration:2,value:0,ease:"power4.out"});
+          progressAnimBool.current = false;
+        }
       }
-      if(scrollPosition>=1000&&worksAnimBool.current){
-        gsap.to("#worksAnimation",{duration:2,opacity:1,ease:"power4.out"});
-        worksAnimBool.current = false;
+      if(element.works){
+        if(scrollPosition>=element.works&&worksAnimBool.current){
+          gsap.to("#worksAnimation",{duration:2,opacity:1,ease:"power4.out"});
+          worksAnimBool.current = false;
+        }
       }
   },{passive:true})
   },[])
@@ -52,6 +63,7 @@ function App() {
       <div className=' hidden fixed z-10 font-bold text-3xl'>{scrollPositionCount}</div>
       <ThreeVRM/>
       <div className=' ' style={{height:height}}></div>
+      <div className=' h-40'></div>
       <div className=' md:h-[120px] h-[48px]' id='About'></div>
       <div id='aboutAnimation' className=' relative opacity-0'>
         <About/>

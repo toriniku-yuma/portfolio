@@ -115,23 +115,37 @@ export function ThreeVRM(){
 
       async function scrollTextGeometryFunc(){
         const font = new FontLoader().parse(typefaceData);
-        const geometry = new TextGeometry("↓ Please scroll down ↓",{
+        let geometrySize = 0.08;
+        let scrollText = "↓ Please scroll down ↓"
+        if(height/width >= 1){
+          geometrySize = 0.02
+          scrollText = "↓ScrollDown↓"
+        }
+        const geometry = new TextGeometry(scrollText,{
           font:font,
-          size:0.08,
+          size:geometrySize,
           height:0.01
         })
-        const material = new THREE.MeshToonMaterial({color:0x1FB2A5,emissive:"white",emissiveIntensity:0.4})
+        let emissive = 0.4;
+        if(height/width >= 1){
+          emissive = 0
+        }
+        const material = new THREE.MeshToonMaterial({color:0x1FB2A5,emissive:"white",emissiveIntensity:emissive})
         return new THREE.Mesh(geometry,material);
       } 
 
       const scrollTextMesh = await scrollTextGeometryFunc();
       scene.add(scrollTextMesh);
-      scrollTextMesh.position.set(-0.9,-2,-0.5);
+      let scrollTextMeshZ = -0.5;
+      if(height/width >= 1){
+        scrollTextMeshZ = 0.2
+      }
+      scrollTextMesh.position.set(-0.9,-2,scrollTextMeshZ);
 
       async function textGeometryFunc(text:string):Promise<TextGeometry>{
         const font = new FontLoader().parse(typefaceData);
         let geometry;
-        if(width<=1024){
+        if(height/width >= 1){
           geometry = new TextGeometry(text, {
             font:font,
             size: 0.1,
@@ -198,7 +212,11 @@ export function ThreeVRM(){
           mesh.position.set(2,0.5,0.5)
         }else{
           const {maxX} = meshText[key-1]
-          mesh.position.set(maxX+(0.05),0.5,0.5)
+          if(height/width >= 1){
+            mesh.position.set(maxX+(0.01),0.5,0.5)
+          }else{
+            mesh.position.set(maxX+(0.05),0.5,0.5)
+          }
         }
         const positions = (geometry.attributes.position as any).array as number[];
         const numVertices = positions.length / 3;
@@ -311,7 +329,7 @@ export function ThreeVRM(){
         const timeline = gsap.timeline({});
         timeline.add(gsap.to("#loading",{duration:2,opacity:0}),"+=1")
         let positionX = -1
-        if(width<=1024){
+        if(height/width >= 1){
           positionX = -0.3
         }
         timeline.add(gsap.to(vrm.scene.position,{ duration: 3, x: positionX ,ease:"power4.out",onStart:()=>{
@@ -331,15 +349,27 @@ export function ThreeVRM(){
         const timeline = gsap.timeline({});
         meshText.map((value,key)=>{
           const {mesh} = value;
-          if(key === 0){
-            timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.5 ,ease:"power4.out"}))
+          if(height/width >= 1){
+            if(key === 0){
+              timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.25 ,ease:"power4.out"}))
+            }else{
+              timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.25 ,ease:"power4.out"}),"-=1.8")
+            }
           }else{
-            timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.5 ,ease:"power4.out"}),"-=1.8")
+            if(key === 0){
+              timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.5 ,ease:"power4.out"}))
+            }else{
+              timeline.add(gsap.to(mesh.position,{ duration: 2, x: mesh.position.x - 2.5 ,ease:"power4.out"}),"-=1.8")
+            }
           }
         })
         const vrmHead = newVrm.humanoid.getNormalizedBoneNode("head")?.getWorldPosition(new THREE.Vector3())
         if(vrmHead){
-          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + 0.3 , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out",onComplete:()=>{
+          let positionX = 0.3
+          if(height/width >= 1){
+            positionX = 0.05;
+          }
+          timeline.add(gsap.to(camera.position,{ duration: 2, x: vrmHead?.x + positionX , y: vrmHead.y + 0.12 , z: vrmHead.z + 1 ,ease:"power4.out",onComplete:()=>{
             currentCameraPosition = (new THREE.Vector3).copy(camera.position)
             // マウス座標はマウスが動いた時のみ取得できる
             document.addEventListener("mousemove", (event) => {
@@ -360,8 +390,16 @@ export function ThreeVRM(){
         timeline.add(gsap.to("#hedder",{duration: 2, top:0,ease:"bounce.out",onStart:()=>{
           setLoadingHidden("hidden");
         }}))
-        timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,duration:0}))
-        timeline.add(gsap.to(scrollTextMesh.position,{y:1,duration:1,ease:"pawer4.out",onStart:removeEvent}),"+=0.5")
+        if(!vrmHead?.x){
+          return
+        }
+        if(height/width >= 1){
+          timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,x:vrmHead?.x-0.02,duration:0}))
+          timeline.add(gsap.to(scrollTextMesh.position,{y:1.11,duration:1,ease:"pawer4.out",onStart:removeEvent}),"+=0.5")
+        }else{
+          timeline.add(gsap.to(scrollTextMesh.position,{y:0.7,duration:0}));
+          timeline.add(gsap.to(scrollTextMesh.position,{y:1,duration:1,ease:"pawer4.out",onStart:removeEvent}),"+=0.5")
+        }
       });
 
       window.addEventListener("scroll",()=>{

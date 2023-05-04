@@ -2,7 +2,7 @@ export function About(){
     return(
         <div className='flex justify-center'>
         <div className=' relative'>
-            <div className=' bg-base-100 first-line flex flex-col p-10 shadow-md'>
+            <div className=' bg-base-100 first-line flex flex-col p-10 pb-20 shadow-md'>
                 <div className=" flex flex-col items-center"><div className=" m-1 text-3xl">About</div></div>
                 <div className=" flex">
                     <div className="avatar mx-10">
