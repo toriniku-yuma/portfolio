@@ -475,7 +475,7 @@ export function ThreeVRM(){
     return(
       <div>
         <div id="loading" className={` fixed top-0 left-0 z-10 w-full h-full bg-neutral ${loadingHidden}`}>
-          <div className={` text-primary-content absolute left-[50%] top-[50%] flex flex-col ${complete}`}>
+          <div className={` text-primary-content absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 flex flex-col ${complete}`}>
             <div className="radial-progress" style={{"--value":threeProgress}as React.CSSProperties}>{threeProgress}%</div>
             <div className=" text-center">{loading}</div>
           </div>
