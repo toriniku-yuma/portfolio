@@ -13,7 +13,7 @@ export function Works(){
                 description={`React、Next.jsの習得のために作った画像掲示板です。\n身近なものを再現、より便利にを目指して制作しました。`}
                 source="https://github.com/toriniku-yuma/imageBBS_for_Next.js"/>
                 <WorkCompornent
-                href=""
+                href="https://youtu.be/-a0HB9MLrzs"
                 image="./Comment.jpg"
                 title="Reactコメントジェネレータ"
                 description={`HTML5コメントジェネレータというライブ配信支援ツールをリスペクトし、改良したものをReactを用いて作成しました\nWebSocketでコメントを受け取っているので、それを利用してこれ以外の支援ツールにも応用可能となっています`}
