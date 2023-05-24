@@ -18,6 +18,12 @@ export function Works(){
                 title="Reactコメントジェネレータ"
                 description={`HTML5コメントジェネレータというライブ配信支援ツールをリスペクトし、改良したものをReactを用いて作成しました\nWebSocketでコメントを受け取っているので、それを利用してこれ以外の支援ツールにも応用可能となっています`}
                 source="https://github.com/toriniku-yuma/OBSCommentBalloon"/>
+                <WorkCompornent
+                href="https://rustmap.vercel.app/"
+                image="./rustmap.png"
+                title="ゲームサーバー向け観光マップ"
+                description={`私が短期開催していたゲームサーバーの建築物をより見て回りやすくするために作ったNext.js製の観光マップです。\n開催中に用意しなくてはならなかったこともあり、しっかりと運用できるものを1週間で作るために頑張りました。`}
+                source="https://github.com/toriniku-yuma/rustmap"/>
             </div>
         </div>
     </div>

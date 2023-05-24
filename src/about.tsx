@@ -1,3 +1,5 @@
+import Skill from "./Skill"
+
 export function About(){
     return(
         <div className='flex justify-center'>
@@ -28,112 +30,56 @@ export function About(){
                     </div>
                 </div>
                 <div className=" mt-10">
-                    <div><span className=" font-bold">所有スキル</span>:</div>
-                    <div className=" flex flex-col">
-                        <div className=" font-bold text-primary text-lg flex items-center mb-2 mt-4">
-                            <span className=" mr-4">Javascript</span>
-                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="70" max="100"></progress>
-                            <span className=" ml-4 absolute right-5">70%</span>
+                    <div className="mb-4"><span className=" font-bold">所有スキル</span>:</div>
+                    <div className="">
+                        <div className=" text-primary">
+                            <Skill name="Javascript" skillLevel="70" progressColor="progress-primary"/>
+                            <Skill name="Typescript" skillLevel="50" progressColor="progress-primary"/>
+                            <Skill name="Python" skillLevel="50" progressColor="progress-primary"/>
+                            <Skill name="Lua" skillLevel="70" progressColor="progress-primary"/>
+                            <Skill name="C#" skillLevel="30" progressColor="progress-primary"/>
                         </div>
-                        <div className=" font-bold text-primary text-lg flex items-center mb-2">
-                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
-                            <span className=" mr-4">Typescript</span>
-                            <span className=" ml-4 absolute right-5">50%</span>
+                        <div className=" text-secondary">
+                            <Skill name="React" skillLevel="40" progressColor="progress-secondary"/>
+                            <Skill name="Next.js" skillLevel="30" progressColor="progress-secondary"/>
+                            <Skill name="Three.js" skillLevel="50" progressColor="progress-secondary"/>
+                            <Skill name=".NET Framework" skillLevel="30" progressColor="progress-secondary"/>
+                            <Skill name="VCI (VR)" skillLevel="50" progressColor="progress-secondary"/>
                         </div>
-                        <div className=" font-bold text-primary text-lg flex items-center mb-2">
-                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
-                            <span className=" mr-4">Python</span>
-                            <span className=" ml-4 absolute right-5">50%</span>
+                        <div className=" text-accent">
+                            <Skill name="TailwindCSS" skillLevel="60" progressColor="progress-accent"/>
+                            <Skill name="GSAP 3" skillLevel="50" progressColor="progress-accent"/>
+                            <Skill name="Framer-Motion" skillLevel="20" progressColor="progress-accent"/>
+                            <Skill name="WebSocket" skillLevel="60" progressColor="progress-accent"/>
+                            <Skill name="Prisma" skillLevel="30" progressColor="progress-accent"/>
+                            <Skill name="supabase" skillLevel="20" progressColor="progress-accent"/>
+                            <Skill name="Vercel" skillLevel="40" progressColor="progress-accent"/>
                         </div>
-                        <div className=" font-bold text-primary text-lg flex items-center mb-2">
-                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
-                            <span className=" mr-4">Lua</span>
-                            <span className=" ml-4 absolute right-5">50%</span>
+                        <div className=" text-info">
+                            <Skill name="VSCode" skillLevel="70" progressColor="progress-info"/>
+                            <Skill name="Vitual Studio" skillLevel="30" progressColor="progress-info"/>
+                            <Skill name="GitHub" skillLevel="50" progressColor="progress-info"/>
                         </div>
-                        <div className=" font-bold text-primary text-lg flex items-center mb-2">
-                            <progress className="progress progress-primary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
-                            <span className=" mr-4">C#</span>
-                            <span className=" ml-4 absolute right-5">30%</span>
+                        <div className=" font-extrabold text-error text-lg items-center flex my-8">
+                            <span className=" w-[30%]">！VRへの情熱！</span>
+                            <progress className="progress progress-error md:absolute left-[32.3%] lg:w-full sm:w-[60%] w-[40%] h-4" value="100" max="100"></progress>
                         </div>
-                        <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="40" max="100"></progress>
-                            <span className=" mr-4">React</span>
-                            <span className=" ml-4 absolute right-5">40%</span>
-                        </div>
-                        <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
-                            <span className=" mr-4">Next.js</span>
-                            <span className=" ml-4 absolute right-5">30%</span>
-                        </div>
-                        <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
-                            <span className=" mr-4">Three.js</span>
-                            <span className=" ml-4 absolute right-5">50%</span>
-                        </div>
-                        <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
-                            <span className=" mr-4">.NET Framework</span>
-                            <span className=" ml-4 absolute right-5">30%</span>
-                        </div>
-                        <div className=" font-bold text-secondary text-lg flex items-center mb-2">
-                            <progress className="progress progress-secondary md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
-                            <span className=" mr-4">VCI (VR)</span>
-                            <span className=" ml-4 absolute right-5">50%</span>
-                        </div>
-                        <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="60" max="100"></progress>
-                            <span className=" mr-4">TailwindCSS</span>
-                            <span className=" ml-4 absolute right-5">60%</span>
-                        </div>
-                        <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
-                            <span className=" mr-4">GSAP 3</span>
-                            <span className=" ml-4 absolute right-5">50%</span>
-                        </div>
-                        <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="20" max="100"></progress>
-                            <span className=" mr-4">Framer-Motion</span>
-                            <span className=" ml-4 absolute right-5">20%</span>
-                        </div>
-                        <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="60" max="100"></progress>
-                            <span className=" mr-4">WebSocket</span>
-                            <span className=" ml-4 absolute right-5">60%</span>
-                        </div>
-                        <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
-                            <span className=" mr-4">Prisma</span>
-                            <span className=" ml-4 absolute right-5">30%</span>
-                        </div>
-                        <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="20" max="100"></progress>
-                            <span className=" mr-4">supabase</span>
-                            <span className=" ml-4 absolute right-5">20%</span>
-                        </div>
-                        <div className=" font-bold text-accent text-lg flex items-center mb-2">
-                            <progress className="progress progress-accent md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="40" max="100"></progress>
-                            <span className=" mr-4">Vercel</span>
-                            <span className=" ml-4 absolute right-5">40%</span>
-                        </div>
-                        <div className=" font-bold text-info text-lg flex items-center mb-2">
-                            <progress className="progress progress-info md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="70" max="100"></progress>
-                            <span className=" mr-4">VSCode</span>
-                            <span className=" ml-4 absolute right-5">70%</span>
-                        </div>
-                        <div className=" font-bold text-info text-lg flex items-center mb-2">
-                            <progress className="progress progress-info md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="30" max="100"></progress>
-                            <span className=" mr-4">Visual Studio</span>
-                            <span className=" ml-4 absolute right-5">30%</span>
-                        </div>
-                        <div className=" font-bold text-info text-lg flex items-center mb-2">
-                            <progress className="progress progress-info md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="50" max="100"></progress>
-                            <span className=" mr-4">GitHub</span>
-                            <span className=" ml-4 absolute right-5">50%</span>
-                        </div>
-                        <div className=" font-extrabold text-error text-lg flex items-center my-8">
-                            <progress className="progress progress-error lg:w-[100%] md:w-[60%] w-[40%] h-4 absolute left-[190px]" value="100" max="100"></progress>
-                            <span className=" mr-4">！VRへの情熱！</span>
-                            <span className=" ml-4 absolute right-5"></span>
+                        <div className="collapse">
+                            <input type="checkbox" />
+                            <div className="collapse-title btn text-xl font-medium p-0">
+                                READ MORE
+                            </div>
+                            <div className="collapse-content p-0 text-warning mt-4">
+                                <Skill name="Linux" skillLevel="40" progressColor="progress-warning"/>
+                                <Skill name="サーバー運用(ゲーム)" skillLevel="60" progressColor="progress-warning"/>
+                                <Skill name="動画制作" skillLevel="50" progressColor="progress-warning"/>
+                                <Skill name="画像編集" skillLevel="40" progressColor="progress-warning"/>
+                                <Skill name="音楽制作" skillLevel="30" progressColor="progress-warning"/>
+                                <Skill name="Voicemeeter" skillLevel="70" progressColor="progress-warning"/>
+                                <Skill name="ブログ" skillLevel="50" progressColor="progress-warning"/>
+                                <Skill name="Blender" skillLevel="30" progressColor="progress-warning"/>
+                                <Skill name="Unity" skillLevel="30" progressColor="progress-warning"/>
+                            </div>
                         </div>
                     </div>
                 </div>
