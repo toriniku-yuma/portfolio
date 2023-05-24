@@ -26,6 +26,8 @@ export function About(){
                             <a className=" mx-2" href="https://github.com/toriniku-yuma" target="_blank" rel="noopener noreferrer">GitHub</a></div>
                             <div><img src="./zenn.svg" className=" w-5 inline-block"/>
                             <a className=" mx-2" href="https://zenn.dev/habayuma" target="_blank" rel="noopener noreferrer">Zenn</a></div>
+                            <div><img src="./note.png" className=" w-5 inline-block"/>
+                            <a className=" mx-2" href="https://note.com/haba_yuma" target="_blank" rel="noopener noreferrer">note</a></div>
                         </div>
                     </div>
                 </div>
