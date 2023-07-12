@@ -51,7 +51,7 @@ function App() {
   return (
     <div className='hidden-scrollbar'>
       <div id='hedder' className=' flex md:justify-between fixed bg-base-100 z-10 w-full -top-[140px] left-0'>
-        <div className='lg:text-9xl md:text-7xl text-5xl font-bold drop-shadow'><span className='text-primary'>PORT</span><span className=' text-secondary'>FOLIO</span></div>
+        <div className='lg:text-9xl md:text-7xl sm:text-5xl text-4xl font-bold drop-shadow'><span className='text-primary'>PORT</span><span className=' text-secondary'>FOLIO</span></div>
         <div className='flex items-center md:pr-10'>
           {menulist.map((value,index)=>{
             return(

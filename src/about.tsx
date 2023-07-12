@@ -4,7 +4,7 @@ export function About(){
     return(
         <div className='flex justify-center'>
         <div className=' relative'>
-            <div className=' bg-base-100 first-line flex flex-col p-10 pb-20 shadow-md'>
+            <div className=' bg-base-100 first-line flex flex-col md:p-10 p-0 pb-20 shadow-md'>
                 <div className=" flex flex-col items-center"><div className=" m-1 text-3xl">About</div></div>
                 <div className=" flex">
                     <div className="avatar mx-10">
@@ -64,7 +64,7 @@ export function About(){
                         </div>
                         <div className=" font-extrabold text-error text-lg items-center flex my-8">
                             <span className=" w-[30%]">！VRへの情熱！</span>
-                            <progress className="progress progress-error md:absolute left-[32.3%] lg:w-full sm:w-[60%] w-[40%] h-4" value="100" max="100"></progress>
+                            <progress className="progress progress-error md:absolute md:left-[32.3%] lg:w-full sm:w-[60%] w-[40%] h-4" value="100" max="100"></progress>
                         </div>
                         <div className="collapse">
                             <input type="checkbox" />
