@@ -59,7 +59,7 @@ export function About(){
                         </div>
                         <div className=" text-info">
                             <Skill name="VSCode" skillLevel="70" progressColor="progress-info"/>
-                            <Skill name="Vitual Studio" skillLevel="30" progressColor="progress-info"/>
+                            <Skill name="Visual Studio" skillLevel="30" progressColor="progress-info"/>
                             <Skill name="GitHub" skillLevel="50" progressColor="progress-info"/>
                         </div>
                         <div className=" font-extrabold text-error text-lg items-center flex my-8">
